@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    hylafax (0.0.7)
+    hylafax (0.0.14)
 
 GEM
   remote: http://rubygems.org/
