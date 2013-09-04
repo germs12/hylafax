@@ -89,10 +89,10 @@ module Hylafax
     def configure_from_env
       if defined?(Rails) && File.exists?(file=Rails.root.join('config/fax.yml'))
         yaml_config = YAML.load_file file
-        Hylafax.configuration = Hylafax::configuration.new yaml_config[Rails.env]
+        Hylafax.configuration = Hylafax::Configuration.new yaml_config[Rails.env]
       end
+
       Hylafax.configuration ||= Hylafax::Configuration.new
     end
-
   end
 end

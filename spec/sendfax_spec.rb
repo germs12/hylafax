@@ -18,7 +18,7 @@ describe Hylafax::Sendfax do
       Hylafax::Sendfax.any_instance.stub(:sendfax).and_return(fake_sendfax_response)      
 
       tmp = Hylafax::Sendfax.new(document: '/tmp/cool.pdf')
-      tmp.send.should == true
+      tmp.transmit.should == true
       tmp.request_id.should == 19
       tmp.group_id.should == 29
 

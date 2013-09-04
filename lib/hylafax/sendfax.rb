@@ -7,33 +7,30 @@ module Hylafax
     def initialize(options={})
       configure_from_env
       raise Hylafax::ConfigError if Hylafax.configuration.sendfax_path.nil?
-      # unless options.empty?
-      #   options[:document]    = '/tmp/cool.pdf'
-      #   options[:fax_number]  = 'james@2037691544'
-      #   options[:from]        = 'James Gem Example'
-      #   options[:document]    = '/tmp/cool.pdf'
-      # end
 
-      # @subject    = options[:subject]
       @document   = options[:document]
       @fax_number = options[:fax_number]
       @from       = options[:from]
       @to         = options[:to]
-      
     end
 
-    def send
+    def transmit
       @response = sendfax
       parse_response
       return true
     end
 
-
     private
     def sendfax
-      raise Hylafax::ParamError if @from.empty? || @to.empty? || @fax_number.empty? || @document.empty?
-      @call = "#{HylafaxHylafax.configuration.sendfax_path} -f \"#{@from}\" -d \"#{@to}@#{@fax_number}\" -h #{Hylafax.configuration.sendfax_host} #{@document}"
-      `#{@call}`
+      raise Hylafax::ParamError if @fax_number.empty? || @document.empty?
+
+      @call = "#{Hylafax.configuration.sendfax_path}"
+      @call << " -B #{Hylafax.configuration.speed}" if Hylafax.configuration.speed
+      @call << ' -n' unless Hylafax.configuration.cover_sheet
+      @call << " -h #{Hylafax.configuration.sendfax_host}"
+      @call << " -d +1#{@fax_number}"
+
+      `#{@call} #{@document}`
     end
 
     def parse_response
@@ -46,10 +43,10 @@ module Hylafax
     def configure_from_env
       if defined?(Rails) && File.exists?(file=Rails.root.join('config/fax.yml'))
         yaml_config = YAML.load_file file
-        Hylafax.configuration = Hylafax::configuration.new yaml_config[Rails.env]
+        Hylafax.configuration = Hylafax::Configuration.new yaml_config[Rails.env]
       end
+
       Hylafax.configuration ||= Hylafax::Configuration.new
     end    
-
   end
 end
