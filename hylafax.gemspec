@@ -7,7 +7,7 @@ Gem::Specification.new do |gem|
   gem.name          = "hylafax"
   gem.version       = Hylafax::VERSION
   gem.authors       = ["James Thullbery"]
-  gem.email         = ["jthullbery@teladoc.com"]
+  gem.email         = ["ifndef@gmail.com"]
   gem.description   = %q{Ruby wrapper for Hylafax Server}
   gem.summary       = %q{Ruby wrapper for Hylafax Server}
   gem.homepage      = ""
